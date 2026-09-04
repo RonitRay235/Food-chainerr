@@ -1,15 +1,15 @@
 # Food Chainer — SIH Food Safety & Package Scanner
 
-An AI-powered food package scanner, OCR nutrition analyzer, and statutory **FSSAI Compliance Verification Platform** designed for Indian Food Security, regulatory auditing, and consumer health awareness.
+A food package scanner, OCR nutrition analyzer, and statutory **FSSAI Compliance Verification Platform** designed for Indian Food Security, regulatory auditing, and consumer health awareness.
 
 ---
 
 ## 🌟 Key Features
 
 ### 1. Direct Package Scanner & Real-Time Audit
-- **1-Click Live Camera Capture**: Instant access to your device camera with responsive framing reticle and one-click capture.
+- **1-Click Live Camera Capture**: Instant access to our device camera with responsive framing reticle and one-click capture.
 - **Packaging Photo Upload**: Supports drag-and-drop or manual upload of packaged food labels (JPEG, PNG, WebP).
-- **Multimodal AI Analysis**: Powered by Google Gemini (`gemini-2.5-flash`) to parse front and back food packaging in seconds.
+- **Multimodal AI Analysis**: Powered by Google Gemini (`gemini-2.5-flash`) to parse front and back food packaging .
 - **Statutory FSSAI Compliance Score**: Calculates an objective 0–100 compliance rating based on mandatory Indian food safety norms:
   - 14-digit FSSAI License Number detection and format validation.
   - Green/Brown Veg vs. Non-Veg logo verification.
