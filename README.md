@@ -133,6 +133,12 @@ npm start
 - **Zero Automatic Tracking**: Scanned images are processed in-memory for audit generation and only stored when explicitly saved by the user.
 
 ---
-
+## TEAM MEMBERS(ROLE) 
+--ADITYA SHAW - BACKEND DEVELOPER(TEAM LEADER)
+--RONIT RAY - FRONTEND DEVELOPER
+--SAYAN KAR - PPT DEVELOPER 
+--SUBHAM TIWARY - RESEARCH 
+--BANISETTY PREMKAMAL - RESEARCH AND PPT DEVELOPER
+--SHREEPARNA PAUL - INTEGRATING FRONTEND AND BACKEND
 ## 📜 License
 This project is created for food safety awareness, research, and compliance verification following Government of India FSSAI guidelines.
