@@ -12,8 +12,16 @@ import { Footer } from './components/Footer';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<TabType>('home');
-  const [scans, setScans] = useState<ScanRecord[]>(SAMPLE_PRODUCTS);
-  const [activeScanResult, setActiveScanResult] = useState<ScanRecord | null>(SAMPLE_PRODUCTS[0]);
+  // Only show food products that the user has explicitly saved from their scans
+  const [scans, setScans] = useState<ScanRecord[]>(() => {
+    try {
+      const saved = localStorage.getItem('user_saved_food_scans');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [activeScanResult, setActiveScanResult] = useState<ScanRecord | null>(null);
   const [selectedCase, setSelectedCase] = useState<PriorityCase | null>(null);
   const [globalSearchQuery, setGlobalSearchQuery] = useState('');
 
@@ -34,7 +42,15 @@ export default function App() {
 
   // Handle deleting a scan from Library
   const handleDeleteScan = (id: string) => {
-    setScans(prev => prev.filter(s => s.id !== id));
+    setScans(prev => {
+      const updated = prev.filter(s => s.id !== id);
+      try {
+        localStorage.setItem('user_saved_food_scans', JSON.stringify(updated));
+      } catch (err) {
+        console.warn('Failed to update localStorage:', err);
+      }
+      return updated;
+    });
     if (activeScanResult?.id === id) {
       setActiveScanResult(null);
     }
@@ -47,12 +63,15 @@ export default function App() {
   const handleSaveProduct = (scan: ScanRecord) => {
     setScans(prev => {
       const idx = prev.findIndex(s => s.id === scan.id);
-      if (idx >= 0) {
-        const updated = [...prev];
-        updated[idx] = scan;
-        return updated;
+      const updated = idx >= 0
+        ? prev.map((s, i) => (i === idx ? scan : s))
+        : [scan, ...prev];
+      try {
+        localStorage.setItem('user_saved_food_scans', JSON.stringify(updated));
+      } catch (err) {
+        console.warn('Failed to save to localStorage:', err);
       }
-      return [scan, ...prev];
+      return updated;
     });
     fetch('/api/scans/save', {
       method: 'POST',

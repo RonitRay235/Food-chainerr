@@ -93,15 +93,6 @@ export const TopNav: React.FC<TopNavProps> = ({
             />
           </div>
 
-          <button
-            id="nav-new-scan-pill"
-            onClick={() => onSelectTab('scanner')}
-            className="flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-xs transition-colors"
-          >
-            <span className="material-symbols-outlined text-[16px]">add_a_photo</span>
-            <span>Scan Packet</span>
-          </button>
-
           <button 
             id="nav-notifications-btn"
             title="Notifications"

@@ -23,14 +23,6 @@ export const RulesManagementView: React.FC = () => {
     }
   ]);
 
-  const [thresholds, setThresholds] = useState({
-    sodiumMax: 500, // mg
-    sugarMax: 10, // g
-    transFatMax: 0.2, // g
-    requireQrCode: true,
-    requireBilingualLabels: true
-  });
-
   const [showAddModal, setShowAddModal] = useState(false);
   const [newVersionName, setNewVersionName] = useState('');
 
@@ -171,65 +163,70 @@ export const RulesManagementView: React.FC = () => {
         </div>
       </div>
 
-      {/* Threshold Parameter Settings Card */}
+      {/* Threshold Parameter Settings Card (Locked Statutory FSSAI Reference Standards) */}
       <div className="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/30 shadow-xs">
-        <h3 className="text-sm font-bold uppercase font-mono tracking-wider text-on-background mb-4">
-          Safety &amp; HFSS Alert Thresholds (Front-of-Pack Labelling)
-        </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary text-[20px]">verified</span>
+            <h3 className="text-sm font-bold uppercase font-mono tracking-wider text-on-background">
+              Safety &amp; HFSS Alert Thresholds (Front-of-Pack Labelling)
+            </h3>
+          </div>
+          <span className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 px-3 py-1 rounded-full font-semibold">
+            <span className="material-symbols-outlined text-[14px]">lock</span>
+            <span>Statutory FSSAI Norms · Locked</span>
+          </span>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-          <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
-            <label className="font-semibold text-on-surface block mb-1">
-              Max Sodium Threshold (mg / 100g)
-            </label>
-            <div className="flex items-center gap-2 mt-2">
-              <input
-                type="number"
-                value={thresholds.sodiumMax}
-                onChange={(e) => setThresholds({ ...thresholds, sodiumMax: Number(e.target.value) })}
-                className="w-24 bg-white border border-outline-variant rounded-md px-2.5 py-1 font-mono text-on-surface"
-              />
-              <span className="font-mono text-on-surface-variant">mg</span>
+          {/* Max Sodium Threshold */}
+          <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-on-surface">Max Sodium Threshold</span>
+                <span className="material-symbols-outlined text-outline text-[16px]" title="Read-only statutory standard">lock</span>
+              </div>
+              <div className="flex items-baseline gap-2 mt-3 mb-1">
+                <span className="text-3xl font-extrabold font-mono text-primary">500</span>
+                <span className="font-mono text-xs font-bold text-on-surface-variant">mg / 100g</span>
+              </div>
             </div>
-            <p className="text-[10px] text-on-surface-variant mt-2">
-              Packets exceeding 500mg trigger high-sodium warnings.
+            <p className="text-[11px] text-on-surface-variant mt-2 pt-2 border-t border-outline-variant/20 leading-relaxed">
+              Packets exceeding 500mg/100g trigger mandatory high-sodium HFSS warning alerts under FSSAI norms.
             </p>
           </div>
 
-          <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
-            <label className="font-semibold text-on-surface block mb-1">
-              Max Added Sugar (g / 100g)
-            </label>
-            <div className="flex items-center gap-2 mt-2">
-              <input
-                type="number"
-                value={thresholds.sugarMax}
-                onChange={(e) => setThresholds({ ...thresholds, sugarMax: Number(e.target.value) })}
-                className="w-24 bg-white border border-outline-variant rounded-md px-2.5 py-1 font-mono text-on-surface"
-              />
-              <span className="font-mono text-on-surface-variant">grams</span>
+          {/* Max Added Sugar */}
+          <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-on-surface">Max Added Sugar</span>
+                <span className="material-symbols-outlined text-outline text-[16px]" title="Read-only statutory standard">lock</span>
+              </div>
+              <div className="flex items-baseline gap-2 mt-3 mb-1">
+                <span className="text-3xl font-extrabold font-mono text-primary">10</span>
+                <span className="font-mono text-xs font-bold text-on-surface-variant">grams / 100g</span>
+              </div>
             </div>
-            <p className="text-[10px] text-on-surface-variant mt-2">
-              Standard ceiling for health drinks and snacks.
+            <p className="text-[11px] text-on-surface-variant mt-2 pt-2 border-t border-outline-variant/20 leading-relaxed">
+              Statutory ceiling for health drinks, baked goods, breakfast cereals, and confectionery.
             </p>
           </div>
 
-          <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
-            <label className="font-semibold text-on-surface block mb-1">
-              Max Trans Fat Limit (g / 100g)
-            </label>
-            <div className="flex items-center gap-2 mt-2">
-              <input
-                type="number"
-                step="0.1"
-                value={thresholds.transFatMax}
-                onChange={(e) => setThresholds({ ...thresholds, transFatMax: Number(e.target.value) })}
-                className="w-24 bg-white border border-outline-variant rounded-md px-2.5 py-1 font-mono text-on-surface"
-              />
-              <span className="font-mono text-on-surface-variant">grams</span>
+          {/* Max Trans Fat Limit */}
+          <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-on-surface">Max Trans Fat Limit</span>
+                <span className="material-symbols-outlined text-outline text-[16px]" title="Read-only statutory standard">lock</span>
+              </div>
+              <div className="flex items-baseline gap-2 mt-3 mb-1">
+                <span className="text-3xl font-extrabold font-mono text-primary">0.2</span>
+                <span className="font-mono text-xs font-bold text-on-surface-variant">grams / 100g</span>
+              </div>
             </div>
-            <p className="text-[10px] text-on-surface-variant mt-2">
-              FSSAI strict 0.2g limit per 100g food portion.
+            <p className="text-[11px] text-on-surface-variant mt-2 pt-2 border-t border-outline-variant/20 leading-relaxed">
+              FSSAI strict 0.2g limit per 100g food portion (zero trans-fat standard for industrial trans fats).
             </p>
           </div>
         </div>

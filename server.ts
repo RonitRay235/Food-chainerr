@@ -298,7 +298,7 @@ const mockScans: ScanRecord[] = [
   }
 ];
 
-let scanHistory: ScanRecord[] = [...mockScans];
+let scanHistory: ScanRecord[] = [];
 
 // FSSAI Rulesets data
 let regulationRules = [

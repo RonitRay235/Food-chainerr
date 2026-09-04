@@ -372,6 +372,23 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 </article>
               ))}
         </section>
+      ) : scans.length === 0 ? (
+        <div className="bg-surface-container-lowest rounded-[24px] border border-outline-variant/30 py-16 px-6 text-center flex flex-col items-center justify-center shadow-soft">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3">
+            <span className="material-symbols-outlined text-[34px]">bookmark_border</span>
+          </div>
+          <h3 className="text-xl font-bold text-on-surface font-display">No Saved Food Products Yet</h3>
+          <p className="text-xs md:text-sm text-on-surface-variant max-w-md mt-1.5 mb-6 font-sans leading-relaxed">
+            Your library is empty. Whenever you scan a food packaging photo and click <strong>"Save Product"</strong>, it will appear here.
+          </p>
+          <button
+            onClick={onNewScan}
+            className="bg-primary text-white text-xs md:text-sm font-semibold px-6 py-2.5 rounded-xl cursor-pointer shadow-ambient hover:bg-primary-container transition-all flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">document_scanner</span>
+            <span>Scan Food Packet</span>
+          </button>
+        </div>
       ) : (
         <div className="bg-surface-container-lowest rounded-[24px] border border-outline-variant/30 py-16 px-6 text-center flex flex-col items-center justify-center shadow-soft">
           <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-outline mb-3">
@@ -379,7 +396,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
           </div>
           <h3 className="text-lg font-bold text-on-surface font-display">No matching products found</h3>
           <p className="text-xs text-on-surface-variant max-w-sm mt-1 mb-4 font-sans">
-            Try adjusting your search keywords or resetting filters to see all audited food packages.
+            Try adjusting your search keywords or resetting filters to see your saved food packages.
           </p>
           <button
             onClick={clearFilters}

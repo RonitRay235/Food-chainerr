@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ScanRecord } from '../types';
 
 interface ScannerViewProps {
@@ -151,7 +151,11 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onScanComplete }) => {
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
       });
       streamRef.current = stream;
       setIsCameraActive(true);
@@ -171,6 +175,28 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onScanComplete }) => {
       setIsCameraActive(false);
     }
   };
+
+  // Sync stream to video element when camera becomes active
+  useEffect(() => {
+    if (isCameraActive && streamRef.current && videoRef.current) {
+      if (videoRef.current.srcObject !== streamRef.current) {
+        videoRef.current.srcObject = streamRef.current;
+      }
+      videoRef.current.play().catch(err => {
+        console.warn('Camera video play on mount notice:', err);
+      });
+    }
+  }, [isCameraActive]);
+
+  // Clean up camera stream on unmount
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+    };
+  }, []);
 
   const capturePhoto = () => {
     if (!videoRef.current) return;
@@ -210,8 +236,8 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onScanComplete }) => {
 
       {/* Main Scanner Card */}
       <div className="bg-surface-container-lowest rounded-[24px] border border-outline-variant/30 shadow-ambient overflow-hidden flex flex-col relative min-h-[500px]">
-        {/* Card Header */}
-        <div className="bg-secondary-container h-[52px] px-6 flex items-center justify-between border-b border-outline-variant/30">
+        {/* Card Header (Cleaned: redundant top-right camera and upload buttons removed) */}
+        <div className="bg-secondary-container h-[52px] px-6 flex items-center border-b border-outline-variant/30">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-on-secondary-container text-[20px]">
               document_scanner
@@ -219,24 +245,6 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onScanComplete }) => {
             <span className="text-xs font-bold text-on-secondary-container tracking-wider uppercase font-mono">
               Direct Package Scanner &amp; Report Generator
             </span>
-          </div>
-          <div className="flex items-center gap-2 text-on-secondary-container">
-            <button 
-              onClick={startCamera} 
-              title="Open Live Camera"
-              className="p-1.5 hover:bg-surface-container rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold"
-            >
-              <span className="material-symbols-outlined text-[18px]">photo_camera</span>
-              <span className="hidden sm:inline">Camera</span>
-            </button>
-            <button 
-              onClick={() => fileInputRef.current?.click()} 
-              title="Upload Packaging Photo"
-              className="p-1.5 hover:bg-surface-container rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold"
-            >
-              <span className="material-symbols-outlined text-[18px]">upload_file</span>
-              <span className="hidden sm:inline">Upload</span>
-            </button>
           </div>
         </div>
 
@@ -258,7 +266,19 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onScanComplete }) => {
           {/* Active Live Camera Stream */}
           {isCameraActive ? (
             <div className="absolute inset-0 bg-black flex flex-col items-center justify-center z-20">
-              <video ref={videoRef} className="w-full h-full object-cover" playsInline autoPlay />
+              <video
+                ref={(node) => {
+                  videoRef.current = node;
+                  if (node && streamRef.current && node.srcObject !== streamRef.current) {
+                    node.srcObject = streamRef.current;
+                    node.play().catch(() => {});
+                  }
+                }}
+                className="w-full h-full object-cover"
+                playsInline
+                autoPlay
+                muted
+              />
               
               {/* Camera Guide Reticle */}
               <div className="absolute inset-10 border-2 border-dashed border-white/60 rounded-2xl pointer-events-none flex items-center justify-center">
